@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/payments_bank"
+            android:icon="@drawable/ic_payments_bank"
+            android:title="@string/payment_banks" />
+
+        <item android:id="@+id/easy_track"
+            android:icon="@drawable/ic_easy_track"
+            android:title="@string/easy_track"/>
+
+        <item android:title="@string/budget"
+            android:icon="@drawable/ic_budget"
+            android:id="@+id/budget"/>
+
+        <item
+            android:id="@+id/master_bank"
+            android:icon="@drawable/ic_master_bank"
+            android:title="@string/master_banks" />
+
+        <item
+            android:id="@+id/cards"
+            android:icon="@drawable/ic_cards"
+            android:title="@string/cards" />
+
+        <item android:id="@+id/investments"
+            android:icon="@drawable/ic_investments"
+            android:title="@string/investments"/>
+
+        <item android:title="@string/stats"
+            android:icon="@drawable/ic_stats"
+            android:id="@+id/stats"/>
+
+        <item android:id="@+id/settings"
+            android:icon="@drawable/ic_settings"
+            android:title="@string/settings"/>
+    </group>
+</menu>

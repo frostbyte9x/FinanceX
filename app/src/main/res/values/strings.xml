@@ -1,0 +1,35 @@
+<resources>
+    <string name="app_name">FinanceX</string>
+<!--    <string name="navigation_drawer_open">Open navigation drawer</string>-->
+<!--    <string name="navigation_drawer_close">Close navigation drawer</string>-->
+
+    <string name="appx">AppX</string>
+
+    <plurals name="bank">
+        <item quantity="one">Bank</item>
+        <item quantity="other">Banks</item>
+    </plurals>
+
+    <string name="credit_cards">Credit Cards</string>
+    <string name="payment_banks">Payment Banks</string>
+    <string name="master_banks">Master Banks</string>
+    <string name="cards">Cards</string>
+    <string name="settings">Settings</string>
+    <string name="easy_track">Easy Track</string>
+    <string name="investments">Investments</string>
+    <string name="stats">Stats</string>
+    <string name="budget">Budget</string>
+
+
+    <string name="default_confirmation">Are you sure you want to %s?</string>
+
+    <!-- BANK NAME-->
+    <string name="axis">Axis Bank</string>
+    <string name="hdfc">HDFC Bank</string>
+    <string name="ppbl">Paytm Payments Bank</string>
+    <string name="phonepe">PhonePe</string>
+    <string name="gpay">Google Pay</string>
+
+
+
+</resources>

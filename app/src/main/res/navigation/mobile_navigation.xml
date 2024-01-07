@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/payments_bank">
+
+    <fragment
+        android:id="@+id/payments_bank"
+        android:name="com.appx.financex.ui.payments_bank.PaymentsBankFragment"
+        android:label="@string/payment_banks"
+        tools:layout="@layout/fragment_payments_bank" />
+
+    <fragment android:id="@+id/easy_track"
+        android:name="com.appx.financex.ui.easy_track.EasyTrackFragment"
+        android:label="@string/easy_track"
+        tools:layout="@layout/fragment_easy_track"/>
+
+    <fragment android:id="@+id/budget"
+        android:name="com.appx.financex.ui.budget.BudgetFragment"
+        android:label="@string/budget"
+        tools:layout="@layout/fragment_budget"/>
+
+    <fragment
+        android:id="@+id/master_bank"
+        android:name="com.appx.financex.ui.master_bank.MasterBankFragment"
+        android:label="@string/master_banks"
+        tools:layout="@layout/fragment_master_bank" />
+
+    <fragment
+        android:id="@+id/cards"
+        android:name="com.appx.financex.ui.cards.CardsFragment"
+        android:label="@string/cards"
+        tools:layout="@layout/fragment_cards" />
+
+    <fragment android:id="@+id/investments"
+        android:name="com.appx.financex.ui.investments.InvestmentsFragment"
+        android:label="@string/investments"
+        tools:layout="@layout/fragment_investments"/>
+
+    <fragment android:id="@+id/stats"
+        android:name="com.appx.financex.ui.stats.StatsFragment"
+        android:label="@string/stats"
+        tools:layout="@layout/fragment_stats"/>
+
+    <fragment android:id="@+id/settings"
+        android:name="com.appx.financex.ui.settings.SettingsFragment"
+        android:label="@string/settings"
+        tools:layout="@layout/fragment_settings"/>
+</navigation>
