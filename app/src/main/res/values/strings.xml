@@ -11,7 +11,7 @@
     </plurals>
 
     <string name="credit_cards">Credit Cards</string>
-    <string name="payment_banks">Payment Banks</string>
+    <string name="payment_banks">Payments Banks</string>
     <string name="master_banks">Master Banks</string>
     <string name="cards">Cards</string>
     <string name="settings">Settings</string>
@@ -22,6 +22,7 @@
 
 
     <string name="default_confirmation">Are you sure you want to %s?</string>
+    <string name="content_description">Content Description</string>
 
     <!-- BANK NAME-->
     <string name="axis">Axis Bank</string>
