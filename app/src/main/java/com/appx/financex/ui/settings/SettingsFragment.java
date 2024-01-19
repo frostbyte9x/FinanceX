@@ -7,9 +7,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import java.util.List;
+import com.appx.libs.ImgLib;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 import com.appx.financex.FlexAdapter;
+import com.appx.financex.ItemData;
 import com.appx.financex.databinding.FragmentSettingsBinding;
 
 public class SettingsFragment extends Fragment {
@@ -26,6 +28,7 @@ public class SettingsFragment extends Fragment {
         View root = binding.getRoot();
 
         recView = binding.recView;
+        populateData(list);
         adapter = new FlexAdapter(context,list);
         adapter.setRecyclerAdapter(recView);
 
@@ -36,5 +39,11 @@ public class SettingsFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+    }
+
+    private void populateData(List<Object> list)
+    {
+        list.add(new ItemData.SettingListData("Setting","Subtitle",ImgLib.getImageResource("cigar"),"azure"));
+        list.add(new ItemData.SettingListData("Setting","Subtitle",ImgLib.getImageResource("cash"),"lavender"));
     }
 }
