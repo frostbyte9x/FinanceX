@@ -21,15 +21,9 @@
     <string name="budget">Budget</string>
 
 
-    <string name="default_confirmation">Are you sure you want to %s?</string>
+
     <string name="content_description">Content Description</string>
 
-    <!-- BANK NAME-->
-    <string name="axis">Axis Bank</string>
-    <string name="hdfc">HDFC Bank</string>
-    <string name="ppbl">Paytm Payments Bank</string>
-    <string name="phonepe">PhonePe</string>
-    <string name="gpay">Google Pay</string>
 
 
 
