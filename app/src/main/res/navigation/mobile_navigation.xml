@@ -46,5 +46,36 @@
     <fragment android:id="@+id/settings"
         android:name="com.appx.financex.ui.settings.SettingsFragment"
         android:label="@string/settings"
-        tools:layout="@layout/fragment_settings"/>
+        tools:layout="@layout/fragment_settings">
+
+        <action
+            android:id="@+id/action_linked_accounts"
+            app:destination="@id/linked_accounts" />
+
+        <action
+            android:id="@+id/action_privacy_settings"
+            app:destination="@id/privacy_settings" />
+
+        <action
+            android:id="@+id/action_storage_and_data"
+            app:destination="@id/storage_and_data"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/linked_accounts"
+        android:name="com.appx.financex.ui.settings.LinkedAccounts"
+        android:label="@string/linked_accounts"
+        tools:layout="@layout/fragment_linked_accounts"/>
+
+    <fragment
+        android:id="@+id/privacy_settings"
+        android:name="com.appx.financex.ui.settings.PrivacySettings"
+        android:label="@string/privacy_settings"
+        tools:layout="@layout/fragment_privacy_settings"/>
+
+    <fragment
+        android:id="@+id/storage_and_data"
+        android:name="com.appx.financex.ui.settings.StorageAndData"
+        android:label="@string/storage_and_data"
+        tools:layout="@layout/fragment_storage_and_data"/>
 </navigation>

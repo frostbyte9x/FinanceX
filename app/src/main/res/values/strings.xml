@@ -20,6 +20,9 @@
     <string name="stats">Stats</string>
     <string name="budget">Budget</string>
 
+    <string name="privacy_settings">Privacy Settings</string>
+    <string name="linked_accounts">Linked Accounts</string>
+    <string name="storage_and_data">Storage &amp; Data</string>
 
     <string name="content_description">Content Description</string>
 

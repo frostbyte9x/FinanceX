@@ -3,20 +3,13 @@ package com.appx.financex;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 import android.content.Context;
 import com.appx.elementcraft.ListItem;
 import com.appx.elementcraft.TintedIconView;
-import com.appx.financex.databinding.LayoutSettingsItemBinding;
-import com.appx.financex.ui.settings.LinkedAccounts;
-import com.appx.financex.ui.settings.PrivacySettings;
-import com.appx.financex.ui.settings.StorageData;
 
 public class FlexAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 {
@@ -97,9 +90,9 @@ public class FlexAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 int pos = getAdapterPosition();
                 switch(pos)
                 {
-                    case 0: replaceFragment(new LinkedAccounts());break;
-                    case 1: replaceFragment(new StorageData()); break;
-                    case 2: replaceFragment(new PrivacySettings());break;
+                    case 0: replaceFragment(R.id.action_linked_accounts);break;
+                    case 1: replaceFragment(R.id.action_storage_and_data); break;
+                    case 2: replaceFragment(R.id.action_privacy_settings);break;
                     default: break;
                 }
             });
@@ -111,13 +104,10 @@ public class FlexAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             tintedIcon.setIcon(data.getIcon(),data.getTheme());
         }
 
-        private void replaceFragment(Fragment fragment)
+        private void replaceFragment(int actionId)
         {
-            FragmentManager fragmentManager = ((AppCompatActivity)binding.getRoot().getContext()).getSupportFragmentManager();
-            FragmentTransaction transaction = fragmentManager.beginTransaction();
-            transaction.replace(binding.getRoot().getId(),fragment);
-            transaction.addToBackStack(null);
-            transaction.commit();
+//            NavDirections action = FragmentSettingsB
+            Navigation.findNavController(binding.getRoot()).navigate(actionId);
         }
     }
 }
