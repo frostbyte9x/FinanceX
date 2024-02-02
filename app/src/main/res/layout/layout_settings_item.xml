@@ -2,20 +2,22 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginHorizontal="5dp"
+    android:layout_marginVertical="3dp"
     android:orientation="horizontal">
 
     <com.appx.elementcraft.TintedIconView
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
         android:id="@+id/tinted_icon"/>
 
     <com.appx.elementcraft.ListItem
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/list_item"
-        app:button_visibility="gone"
-        app:image_visibility="gone"/>
+        android:layout_marginStart="5dp"/>
 
 </LinearLayout>

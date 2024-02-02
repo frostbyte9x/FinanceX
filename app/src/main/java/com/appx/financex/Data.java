@@ -1,6 +1,6 @@
 package com.appx.financex;
 
-public class ItemData {
+public class Data {
 
     public static class SettingListData
     {
@@ -15,6 +15,7 @@ public class ItemData {
             this.icon=icon;
             this.theme = theme;
         }
+
         public String getHeader()
         {
             return header;

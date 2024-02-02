@@ -6,29 +6,31 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
+import java.util.ArrayList;
 import java.util.List;
-import com.appx.libs.ImgLib;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 import com.appx.financex.FlexAdapter;
-import com.appx.financex.ItemData;
+import com.appx.financex.Data;
 import com.appx.financex.databinding.FragmentSettingsBinding;
+import com.appx.libs.ImgLib;
+import com.appx.libs.StringLib;
 
 public class SettingsFragment extends Fragment {
     private FragmentSettingsBinding binding;
     private RecyclerView recView;
     private List<Object> list;
     private FlexAdapter adapter;
-    private final Context context = requireContext();
+    private final Context context = getContext();
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
         binding = FragmentSettingsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-
         recView = binding.recView;
-        populateData(list);
+        list = new ArrayList<>();
+        populateData();
         adapter = new FlexAdapter(context,list);
         adapter.setRecyclerAdapter(recView);
 
@@ -41,9 +43,10 @@ public class SettingsFragment extends Fragment {
         binding = null;
     }
 
-    private void populateData(List<Object> list)
+    private void populateData()
     {
-        list.add(new ItemData.SettingListData("Setting","Subtitle",ImgLib.getImageResource("cigar"),"azure"));
-        list.add(new ItemData.SettingListData("Setting","Subtitle",ImgLib.getImageResource("cash"),"lavender"));
+        list.add(new Data.SettingListData("Linked Accounts", StringLib.getStringResource("linked-account-description"), ImgLib.getImageResource("cash"),"azure"));
+        list.add(new Data.SettingListData("Storage & Data",StringLib.getStringResource("storage-data-description"),ImgLib.getImageResource("cash"),"azure"));
+        list.add(new Data.SettingListData("Privacy Settings",StringLib.getStringResource("privacy-settings-description"),ImgLib.getImageResource("cash"),"azure"));
     }
 }

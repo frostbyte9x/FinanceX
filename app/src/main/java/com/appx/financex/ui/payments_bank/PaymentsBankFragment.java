@@ -11,7 +11,7 @@ import com.appx.financex.databinding.FragmentPaymentsBankBinding;
 
 public class PaymentsBankFragment extends Fragment {
     private FragmentPaymentsBankBinding binding;
-    private final Context context = requireContext();
+    private final Context context = getContext();
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {

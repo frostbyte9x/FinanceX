@@ -13,7 +13,7 @@
 
         <!-- Customize your theme here. -->
         <item name="fontFamily">@font/varela_regular</item>
-        <item name="android:background">@color/primary_background</item>
+<!--        <item name="android:background">@color/primary_background</item>-->
 
         <item name="android:windowLightStatusBar">true</item>
         <item name="android:windowLightNavigationBar">true</item>

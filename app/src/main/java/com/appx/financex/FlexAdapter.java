@@ -1,24 +1,30 @@
 package com.appx.financex;
 
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 import android.content.Context;
 import com.appx.elementcraft.ListItem;
 import com.appx.elementcraft.TintedIconView;
+import com.appx.financex.databinding.LayoutSettingsItemBinding;
+import com.appx.financex.ui.settings.LinkedAccounts;
+import com.appx.financex.ui.settings.PrivacySettings;
+import com.appx.financex.ui.settings.StorageData;
 
 public class FlexAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 {
     private static final int SETTINGS_LIST = 1;
     private static final int DEFAULT = -1;
-
-
     private List<Object> list;
     private Context context;
+
     public FlexAdapter(Context context,List<Object> list)
     {
         this.context = context;
@@ -29,13 +35,12 @@ public class FlexAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View view;
 
         switch (viewType)
         {
             case SETTINGS_LIST:
-                view = inflater.inflate(R.layout.layout_settings_item,parent,false);
-                return new SettingListViewHolder(view);
+                LayoutSettingsItemBinding binding = LayoutSettingsItemBinding.inflate(inflater,parent,false);
+                return new SettingListViewHolder(binding);
             default:return null;
 
         }
@@ -47,7 +52,7 @@ public class FlexAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         switch (holder.getItemViewType())
         {
             case SETTINGS_LIST:
-                ((SettingListViewHolder)holder).bind((ItemData.SettingListData) list.get(position));
+                ((SettingListViewHolder)holder).bind((Data.SettingListData) list.get(position));
                 break;
             default:
         }
@@ -57,7 +62,7 @@ public class FlexAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     public int getItemViewType(int position) {
         Object obj = list.get(position);
 
-        if(obj instanceof ItemData.SettingListData)
+        if(obj instanceof Data.SettingListData)
             return SETTINGS_LIST;
         return DEFAULT;
     }
@@ -79,15 +84,40 @@ public class FlexAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     {
         private ListItem listItem;
         private TintedIconView tintedIcon;
-        SettingListViewHolder(@NonNull View itemView)
+        private LayoutSettingsItemBinding binding;
+
+        SettingListViewHolder(@NonNull LayoutSettingsItemBinding binding)
         {
-            super(itemView);
+            super(binding.getRoot());
+            this.binding =binding;
+            listItem = binding.listItem;
+            tintedIcon = binding.tintedIcon;
+
+            binding.getRoot().setOnClickListener(v -> {
+                int pos = getAdapterPosition();
+                switch(pos)
+                {
+                    case 0: replaceFragment(new LinkedAccounts());break;
+                    case 1: replaceFragment(new StorageData()); break;
+                    case 2: replaceFragment(new PrivacySettings());break;
+                    default: break;
+                }
+            });
         }
 
-        void bind(ItemData.SettingListData data)
+        void bind(Data.SettingListData data)
         {
             listItem.configure(data.getHeader(),data.getSubHeader());
             tintedIcon.setIcon(data.getIcon(),data.getTheme());
+        }
+
+        private void replaceFragment(Fragment fragment)
+        {
+            FragmentManager fragmentManager = ((AppCompatActivity)binding.getRoot().getContext()).getSupportFragmentManager();
+            FragmentTransaction transaction = fragmentManager.beginTransaction();
+            transaction.replace(binding.getRoot().getId(),fragment);
+            transaction.addToBackStack(null);
+            transaction.commit();
         }
     }
 }
