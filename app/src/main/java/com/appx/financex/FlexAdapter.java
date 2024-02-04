@@ -10,6 +10,7 @@ import java.util.List;
 import android.content.Context;
 import com.appx.elementcraft.ListItem;
 import com.appx.elementcraft.TintedIconView;
+import com.appx.financex.databinding.LayoutSettingsItemBinding;
 
 public class FlexAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 {
@@ -106,7 +107,6 @@ public class FlexAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
         private void replaceFragment(int actionId)
         {
-//            NavDirections action = FragmentSettingsB
             Navigation.findNavController(binding.getRoot()).navigate(actionId);
         }
     }
