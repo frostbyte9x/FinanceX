@@ -23,7 +23,7 @@ public class DatabaseHelper extends SQLiteOpenHelper
     {
         db.execSQL("CREATE TABLE CATEGORY_REGISTRY(CID INTEGER PRIMARY KEY AUTOINCREMENT, CATEGORY_NAME TEXT, CATEGORY_TYPE INTEGER, DESCRIPTION TEXT, ICON_ID INTEGER, THEME TEXT)");
         db.execSQL("CREATE TABLE DYNAMIC_BUDGET(UID INTEGER PRIMARY KEY, CID INTEGER, SPENDING_LIMITS REAL, PAYMENT_INTERVALS INTEGER)");
-        db.execSQL("CREATE TABLE META_BANK(UID INTEGER PRIMARY KEY AUTOINCREMENT, BANK_NAME TEXT, BANK_TYPE INTEGER, ICON_ID TEXT, THEME TEXT, AVL_BAL REAL)");
+        db.execSQL("CREATE TABLE META_BANK(UID INTEGER PRIMARY KEY AUTOINCREMENT, BANK_NAME TEXT, BANK_TYPE INTEGER, ICON_ID INTEGER, THEME TEXT, AVL_BAL REAL)");
         db.execSQL("CREATE TABLE META_BUDGET(UID INTEGER PRIMARY KEY AUTOINCREMENT, BUDGET_NAME TEXT)");
     }
 
@@ -137,6 +137,53 @@ public class DatabaseHelper extends SQLiteOpenHelper
             res.add(new Data.BudgetItem(
                     cur.getInt(cur.getColumnIndexOrThrow("UID")),
                     cur.getString(cur.getColumnIndexOrThrow("BUDGET_NAME"))
+            ));
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        return res;
+    }
+
+    public void deleteBudgetItem(int uid)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete("META_BUDGET", "CID=?", new String[]{Integer.toString(uid)});
+    }
+
+    public void addBankData(Data.BankData data)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put("BANK_NAME", data.getBankName());
+        cv.put("BANK_TYPE", data.getBankType());
+        cv.put("ICON_ID", data.getIconId());
+        cv.put("THEME", data.getIconId());
+        cv.put("AVL_BAL", data.getAvailableBalance());
+        db.insert("META_BANK", null, cv);
+    }
+
+    public void deleteBankData(int uid)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete("META_BANK", "UID=?", new String[]{Integer.toString(uid)});
+    }
+
+    public List<Data.BankData> getAllBankData()
+    {
+        List<Data.BankData> res = new ArrayList<>();
+
+        try(SQLiteDatabase db = getReadableDatabase();
+            Cursor cur = db.rawQuery("SELECT * FROM META_BANK",null))
+        {
+            res.add(new Data.BankData(
+                    cur.getInt(cur.getColumnIndexOrThrow("UID")),
+                    cur.getString(cur.getColumnIndexOrThrow("BANK_NAME")),
+                    cur.getInt(cur.getColumnIndexOrThrow("BANK_TYPE")),
+                    cur.getInt(cur.getColumnIndexOrThrow("ICON_ID")),
+                    cur.getString(cur.getColumnIndexOrThrow("THEME")),
+                    cur.getDouble(cur.getColumnIndexOrThrow("AVL_BAL"))
             ));
         }
         catch (Exception e)
