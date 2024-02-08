@@ -21,10 +21,12 @@ public class DatabaseHelper extends SQLiteOpenHelper
     @Override
     public void onCreate(SQLiteDatabase db)
     {
-        db.execSQL("CREATE TABLE CATEGORY_REGISTRY(CID INTEGER PRIMARY KEY AUTOINCREMENT, CATEGORY_NAME TEXT, CATEGORY_TYPE INTEGER, DESCRIPTION TEXT, ICON_ID INTEGER, THEME TEXT)");
-        db.execSQL("CREATE TABLE DYNAMIC_BUDGET(UID INTEGER PRIMARY KEY, CID INTEGER, SPENDING_LIMITS REAL, PAYMENT_INTERVALS INTEGER)");
-        db.execSQL("CREATE TABLE META_BANK(UID INTEGER PRIMARY KEY AUTOINCREMENT, BANK_NAME TEXT, BANK_TYPE INTEGER, ICON_ID INTEGER, THEME TEXT, AVL_BAL REAL)");
-        db.execSQL("CREATE TABLE META_BUDGET(UID INTEGER PRIMARY KEY AUTOINCREMENT, BUDGET_NAME TEXT)");
+        db.execSQL("CREATE TABLE CATEGORY_REGISTRY(CATEGORY_NAME TEXT PRIMARY KEY, CATEGORY_TYPE INTEGER, DESCRIPTION TEXT, ICON_ID INTEGER, THEME TEXT)");
+        db.execSQL("CREATE TABLE DYNAMIC_BUDGET(CATEGORY_NAME TEXT PRIMARY KEY, SPENDING_LIMITS REAL, PAYMENT_INTERVALS INTEGER)");
+        db.execSQL("CREATE TABLE META_BANK(BANK_NAME TEXT PRIMARY KEY, BANK_TYPE INTEGER, ICON_ID INTEGER, THEME TEXT)");
+        db.execSQL("CREATE TABLE META_BUDGET(BUDGET_NAME TEXT PRIMARY KEY, DESCRIPTION TEXT)");
+        db.execSQL("CREATE TABLE META_INVESTMENT(UID INTEGER PRIMARY KEY AUTOINCREMENT, INVESTMENT_NAME TEXT, INVESTMENT_TYPE INTEGER, LINKED_BANK TEXT, RATE REAL, TIME_FRAME INTEGER, INVESTED_AMOUNT REAL, INVESTMENT_RETURNS REAL, ICON_ID INTEGER, THEME TEXT)");
+        db.execSQL("CREATE TABLE META_CARD(CARD_NO INTEGER PRIMARY KEY, CARD_ISSUER TEXT, LINKED_BANK TEXT, ICON_ID INTEGER, THEME TEXT)");
     }
 
     @Override
@@ -43,7 +45,7 @@ public class DatabaseHelper extends SQLiteOpenHelper
 
     }
 
-    public void addCategory(Data.CategoryRegistry data)
+    public void addCategory(Schema.CategoryRegistry data)
     {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
@@ -55,17 +57,16 @@ public class DatabaseHelper extends SQLiteOpenHelper
         db.insert("CATEGORY_REGISTRY", null, cv);
     }
 
-    public List<Data.CategoryRegistry> getAllCategoryRegistries()
+    public List<Schema.CategoryRegistry> getAllCategoryRegistries()
     {
-        List<Data.CategoryRegistry> res = new ArrayList<>();
+        List<Schema.CategoryRegistry> res = new ArrayList<>();
 
         try(SQLiteDatabase db = getReadableDatabase();
             Cursor cur = db.rawQuery("SELECT * FROM CATEGORY_REGISTRY",null))
         {
             while(cur.moveToNext())
             {
-                res.add(new Data.CategoryRegistry(
-                        cur.getInt(cur.getColumnIndexOrThrow("CID")),
+                res.add(new Schema.CategoryRegistry(
                         cur.getString(cur.getColumnIndexOrThrow("CATEGORY_NAME")),
                         cur.getInt(cur.getColumnIndexOrThrow("CATEGORY_TYPE")),
                         cur.getString(cur.getColumnIndexOrThrow("DESCRIPTION")),
@@ -82,15 +83,14 @@ public class DatabaseHelper extends SQLiteOpenHelper
         return res;
     }
 
-    public Data.CategoryRegistry getCategoryRegistry(String categoryName)
+    public Schema.CategoryRegistry getCategoryRegistry(String categoryName)
     {
         try(SQLiteDatabase db = getReadableDatabase();
             Cursor cur = db.rawQuery("SELECT * FROM CATEGORY_REGISTRY WHERE CATEGORY_NAME=?",new String[]{categoryName}))
         {
             if (cur.moveToNext())
             {
-                return new Data.CategoryRegistry(
-                        cur.getInt(cur.getColumnIndexOrThrow("CID")),
+                return new Schema.CategoryRegistry(
                         cur.getString(cur.getColumnIndexOrThrow("CATEGORY_NAME")),
                         cur.getInt(cur.getColumnIndexOrThrow("CATEGORY_TYPE")),
                         cur.getString(cur.getColumnIndexOrThrow("DESCRIPTION")),
@@ -107,37 +107,35 @@ public class DatabaseHelper extends SQLiteOpenHelper
         return null;
     }
 
-    public void deleteCategory(int categoryId)
+    public void deleteCategory(String categoryName)
     {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.delete("CATEGORY_REGISTRY", "CID=?", new String[]{Integer.toString(categoryId)});
+        db.delete("CATEGORY_REGISTRY", "CATEGORY_NAME=?", new String[]{categoryName});
     }
 
-    public void deleteAllCategories()
-    {
-        SQLiteDatabase db = this.getWritableDatabase();
-        db.delete("CATEGORY_REGISTRY",null,null);
-    }
-
-    public void addBudgetItem(Data.BudgetItem data)
+    public void addBudgetItem(Schema.BudgetItem data)
     {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put("BUDGET_NAME", data.getBudgetName());
+        cv.put("DESCRIPTION", data.getBudgetDescription());
         db.insert("META_BUDGET",null, cv);
     }
 
-    public List<Data.BudgetItem> getAllBudgetItems()
+    public List<Schema.BudgetItem> getAllBudgetItems()
     {
-        List<Data.BudgetItem> res = new ArrayList<>();
+        List<Schema.BudgetItem> res = new ArrayList<>();
 
         try(SQLiteDatabase db = getReadableDatabase();
             Cursor cur = db.rawQuery("SELECT * FROM META_BUDGET",null))
         {
-            res.add(new Data.BudgetItem(
-                    cur.getInt(cur.getColumnIndexOrThrow("UID")),
-                    cur.getString(cur.getColumnIndexOrThrow("BUDGET_NAME"))
-            ));
+            while (cur.moveToNext())
+            {
+                res.add(new Schema.BudgetItem(
+                        cur.getString(cur.getColumnIndexOrThrow("BUDGET_NAME")),
+                        cur.getString(cur.getColumnIndexOrThrow("DESCRIPTION"))
+                ));
+            }
         }
         catch (Exception e)
         {
@@ -146,45 +144,125 @@ public class DatabaseHelper extends SQLiteOpenHelper
         return res;
     }
 
-    public void deleteBudgetItem(int uid)
+    public void deleteBudgetItem(String budgetName)
     {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.delete("META_BUDGET", "CID=?", new String[]{Integer.toString(uid)});
+        db.delete("META_BUDGET", "BUDGET_NAME=?", new String[]{budgetName});
     }
 
-    public void addBankData(Data.BankData data)
+    public void addBankItem(Schema.BankItem data)
     {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put("BANK_NAME", data.getBankName());
         cv.put("BANK_TYPE", data.getBankType());
         cv.put("ICON_ID", data.getIconId());
-        cv.put("THEME", data.getIconId());
-        cv.put("AVL_BAL", data.getAvailableBalance());
+        cv.put("THEME", data.getTheme());
         db.insert("META_BANK", null, cv);
     }
 
-    public void deleteBankData(int uid)
+    public void deleteBankItem(String bankName)
     {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.delete("META_BANK", "UID=?", new String[]{Integer.toString(uid)});
+        db.delete("META_BANK", "BANK_NAME=?", new String[]{bankName});
     }
 
-    public List<Data.BankData> getAllBankData()
+    public List<Schema.BankItem> getAllBankItems()
     {
-        List<Data.BankData> res = new ArrayList<>();
+        List<Schema.BankItem> res = new ArrayList<>();
 
         try(SQLiteDatabase db = getReadableDatabase();
             Cursor cur = db.rawQuery("SELECT * FROM META_BANK",null))
         {
-            res.add(new Data.BankData(
-                    cur.getInt(cur.getColumnIndexOrThrow("UID")),
-                    cur.getString(cur.getColumnIndexOrThrow("BANK_NAME")),
-                    cur.getInt(cur.getColumnIndexOrThrow("BANK_TYPE")),
-                    cur.getInt(cur.getColumnIndexOrThrow("ICON_ID")),
-                    cur.getString(cur.getColumnIndexOrThrow("THEME")),
-                    cur.getDouble(cur.getColumnIndexOrThrow("AVL_BAL"))
-            ));
+            while(cur.moveToNext())
+            {
+                res.add(new Schema.BankItem(
+                        cur.getString(cur.getColumnIndexOrThrow("BANK_NAME")),
+                        cur.getInt(cur.getColumnIndexOrThrow("BANK_TYPE")),
+                        cur.getInt(cur.getColumnIndexOrThrow("ICON_ID")),
+                        cur.getString(cur.getColumnIndexOrThrow("THEME"))
+                ));
+            }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        return res;
+    }
+
+    public void addInvestment(Schema.InvestmentItem data)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put("INVESTMENT_NAME", data.getInvestmentName());
+        cv.put("INVESTMENT_TYPE", data.getInvestmentType());
+        cv.put("LINKED_BANK", data.getLinkedBank());
+        cv.put("RATE", data.getRate());
+        cv.put("TIME_FRAME", data.getTimeFrame());
+        cv.put("INVESTED_AMOUNT", data.getInvestedAmount());
+        cv.put("INVESTMENT_RETURNS", data.getInvestmentReturns());
+        cv.put("ICON_ID", data.getIconId());
+        cv.put("THEME", data.getTheme());
+        db.insert("META_INVESTMENT", null, cv);
+    }
+
+    public List<Schema.InvestmentItem> getAllInvestmentItems()
+    {
+        List<Schema.InvestmentItem> res = new ArrayList<>();
+
+        try (SQLiteDatabase db = this.getWritableDatabase();
+             Cursor cur = db.rawQuery("SELECT * FROM META_INVESTMENT", null))
+        {
+            while (cur.moveToNext()) {
+                res.add(new Schema.InvestmentItem(
+                        cur.getInt(cur.getColumnIndexOrThrow("UID")),
+                        cur.getString(cur.getColumnIndexOrThrow("INVESTMENT_NAME")),
+                        cur.getInt(cur.getColumnIndexOrThrow("INVESTMENT_TYPE")),
+                        cur.getString(cur.getColumnIndexOrThrow("LINKED_BANK")),
+                        cur.getDouble(cur.getColumnIndexOrThrow("RATE")),
+                        cur.getInt(cur.getColumnIndexOrThrow("TIME_FRAME")),
+                        cur.getDouble(cur.getColumnIndexOrThrow("INVESTED_AMOUNT")),
+                        cur.getDouble(cur.getColumnIndexOrThrow("INVESTMENT_RETURNS")),
+                        cur.getInt(cur.getColumnIndexOrThrow("ICON_ID")),
+                        cur.getString(cur.getColumnIndexOrThrow("THEME"))
+                ));
+            }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        return res;
+    }
+
+    public void addCardItem(Schema.CardItem data)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put("CARD_NO", data.getCardNo());
+        cv.put("CARD_ISSUER", data.getCardIssuer());
+        cv.put("LINKED_BANK", data.getLinkedBank());
+        cv.put("ICON_ID", data.getIconId());
+        cv.put("THEME", data.getTheme());
+        db.insert("META_CARD", null, cv);
+    }
+
+    public List<Schema.CardItem> getAllCardItems()
+    {
+        List<Schema.CardItem> res = new ArrayList<>();
+
+        try (SQLiteDatabase db = this.getWritableDatabase();
+             Cursor cur = db.rawQuery("SELECT * FROM META_CARD", null)) {
+            while (cur.moveToNext()) {
+                res.add(new Schema.CardItem(
+                        cur.getInt(cur.getColumnIndexOrThrow("CARD_NO")),
+                        cur.getString(cur.getColumnIndexOrThrow("CARD_ISSUER")),
+                        cur.getString(cur.getColumnIndexOrThrow("LINKED_BANK")),
+                        cur.getInt(cur.getColumnIndexOrThrow("ICON_ID")),
+                        cur.getString(cur.getColumnIndexOrThrow("THEME"))
+                ));
+            }
         }
         catch (Exception e)
         {

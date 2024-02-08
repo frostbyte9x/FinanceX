@@ -11,7 +11,7 @@ import java.util.List;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 import com.appx.financex.FlexAdapter;
-import com.appx.financex.Data;
+import com.appx.financex.Schema;
 import com.appx.financex.databinding.FragmentSettingsBinding;
 import com.appx.libs.ImgLib;
 import com.appx.libs.StringLib;
@@ -45,8 +45,8 @@ public class SettingsFragment extends Fragment {
 
     private void populateData()
     {
-        list.add(new Data.SettingListData("Linked Accounts", StringLib.getStringResource("linked-account-description"), ImgLib.getImageResource("cash"),"azure"));
-        list.add(new Data.SettingListData("Storage & Data",StringLib.getStringResource("storage-data-description"),ImgLib.getImageResource("cash"),"azure"));
-        list.add(new Data.SettingListData("Privacy Settings",StringLib.getStringResource("privacy-settings-description"),ImgLib.getImageResource("cash"),"azure"));
+        list.add(new Schema.SettingListData("Linked Accounts", StringLib.getStringResource("linked-account-description"), ImgLib.getImageResource("cash"),"azure"));
+        list.add(new Schema.SettingListData("Storage & Data",StringLib.getStringResource("storage-data-description"),ImgLib.getImageResource("cash"),"azure"));
+        list.add(new Schema.SettingListData("Privacy Settings",StringLib.getStringResource("privacy-settings-description"),ImgLib.getImageResource("cash"),"azure"));
     }
 }

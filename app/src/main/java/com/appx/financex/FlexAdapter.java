@@ -46,7 +46,7 @@ public class FlexAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         switch (holder.getItemViewType())
         {
             case SETTINGS_LIST:
-                ((SettingListViewHolder)holder).bind((Data.SettingListData) list.get(position));
+                ((SettingListViewHolder)holder).bind((Schema.SettingListData) list.get(position));
                 break;
             default:
         }
@@ -56,7 +56,7 @@ public class FlexAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     public int getItemViewType(int position) {
         Object obj = list.get(position);
 
-        if(obj instanceof Data.SettingListData)
+        if(obj instanceof Schema.SettingListData)
             return SETTINGS_LIST;
         return DEFAULT;
     }
@@ -99,7 +99,7 @@ public class FlexAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             });
         }
 
-        void bind(Data.SettingListData data)
+        void bind(Schema.SettingListData data)
         {
             listItem.configure(data.getHeader(),data.getSubHeader());
             tintedIcon.setIcon(data.getIcon(),data.getTheme());
